@@ -1,0 +1,14 @@
+# OSX .DS_Store finder file
+.DS_Store
+
+# ignore dataset directories
+subset0
+subset1
+subset2
+subset3
+subset4
+subset5
+subset6
+subset7
+subset8
+subset9
