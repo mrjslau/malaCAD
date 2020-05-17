@@ -1,7 +1,7 @@
 # OSX .DS_Store finder file
 .DS_Store
 
-# ignore dataset directories
+# dataset directories
 subset0
 subset1
 subset2
@@ -12,3 +12,6 @@ subset6
 subset7
 subset8
 subset9
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
