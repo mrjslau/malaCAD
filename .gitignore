@@ -15,3 +15,7 @@ subset9
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
+
+# .hdf5 datasets and .h5 models
+*.h5
+*.hdf5
