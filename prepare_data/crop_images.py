@@ -7,7 +7,7 @@ import sys
 import numpy as np
 import pandas as pd
 import os
-import glob
+from glob import glob
 from PIL import Image
 from sklearn.model_selection import train_test_split
 import SimpleITK as sitk 
@@ -15,7 +15,7 @@ from joblib import Parallel, delayed
 
 LUNA_PATH = '../dataset/'
 MHD_PATH = LUNA_PATH + '*/'
-CAND_PATH = LUNA_PATH + 'CSVFILES/fix_2.csv'
+CAND_PATH = LUNA_PATH + 'CSVFILES/candidates.csv'
 PICK_PATH = './pickle/'
 
 class CT(object):
@@ -27,7 +27,7 @@ class CT(object):
         
     # Read .mhd/.raw with SimpleITK
     def read_mhd(self):
-        path = glob.glob(MHD_PATH + self.filename + '.mhd')
+        path = glob(MHD_PATH + self.filename + '.mhd')
         print(path)
         self.itk_img = sitk.ReadImage(path[0])
         self.img_arr = sitk.GetArrayFromImage(self.itk_img)
@@ -83,10 +83,14 @@ def create_cropped_imgs(idx, out, X_df, dim = 50):
     Creates CT object and saves cropped nodules
     """
     print(idx)
-    scan = CT(np.asarray(X_df.loc[idx])[0], np.asarray(X_df.loc[idx])[1:])
-    
     outfile = out + str(idx) + '.jpg'
-    scan.save_nodule(outfile, dim)
+
+    if (glob(outfile)):
+        pass
+    else:
+        scan = CT(np.asarray(X_df.loc[idx])[0], np.asarray(X_df.loc[idx])[1:])
+    
+        scan.save_nodule(outfile, dim)
 
 def do_split():
     """
@@ -133,7 +137,7 @@ def main():
         do_split()
 
     X = pd.read_pickle(PICKLE_FILE)
-    Parallel(n_jobs = 1)(delayed(create_cropped_imgs)(idx, OUTPUT_IMG_NAME, X) for idx in X.index)
+    Parallel(n_jobs = 6)(delayed(create_cropped_imgs)(idx, OUTPUT_IMG_NAME, X) for idx in X.index)
     
 
 if __name__ == "__main__":

@@ -1,6 +1,9 @@
 # OSX .DS_Store finder file
 .DS_Store
 
+# VSCode files
+.vscode
+
 # dataset directories
 subset0
 subset1

@@ -1,5 +1,5 @@
 """
-Fix candidates.csv file because our LUNA 
+Fix candidates.csv file if LUNA
 set is incomplete
 """
 
