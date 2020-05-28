@@ -32,8 +32,10 @@ class CT(object):
         self.itk_img = sitk.ReadImage(path[0])
         self.img_arr = sitk.GetArrayFromImage(self.itk_img)
     
-    # Get voxel coordinates
     def get_voxel(self):
+        """
+        Converts Cartesian coordinates to Voxel coordinates
+        """
         origin = self.get_origin()
         spacing = self.get_spacing()
         coordinates = self.get_coordinates()
@@ -58,23 +60,23 @@ class CT(object):
         nodule = self.img_arr[int(z), int(y - dim_h) : int(y + dim_h), int(x - dim_h) : int(x + dim_h)]
         return nodule
 
-    def normalize_planes(self, npzarray):
+    def convert_hu(self, npzarray):
         """
-        Converts Houndsunits to grayscale units
+        Converts Hounsfield units to grayscale units
         """
-        maxHU = 400.
-        minHU = -1000.
-        npzarray = (npzarray - minHU) / (maxHU - minHU)
-        npzarray[npzarray>1] = 1.
-        npzarray[npzarray<0] = 0.
-        return npzarray
+        max_HU = 400.
+        min_HU = -1000.
+        narr = (narr - min_HU) / (max_HU - min_HU)
+        narr[narr > 1] = 1.
+        narr[narr < 0] = 0.
+        return narr
 
     def save_nodule(self, filename, dim):
         """
         Saves cropped nodule from a CT scan to a file
         """
         nodule = self.get_subimage(dim)
-        nodule = self.normalize_planes(nodule)
+        nodule = self.convert_hu(nodule)
         Image.fromarray(nodule * 255).convert('L').save(filename)
 
 
@@ -99,8 +101,8 @@ def do_split():
     cand_df = pd.read_csv(CAND_PATH)
 
     # Get indexes of positives and negatives
-    pos_ids = cand_df[cand_df['class'] == 1].index # 1351 - 1350
-    neg_ids = cand_df[cand_df['class'] == 0].index # 549714 - 548960
+    pos_ids = cand_df[cand_df['class'] == 1].index # 1351
+    neg_ids = cand_df[cand_df['class'] == 0].index # 549714
     # Take negatives only ten times the size of positives (13510)
     neg_ids = np.random.choice(neg_ids, len(pos_ids) * 10, replace = False)
     # Create new df only with new negatives and positives
