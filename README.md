@@ -18,8 +18,8 @@ Bachelor Thesis project 2020
 * scikit-learn
 
 ## Datasets used:
-LUNA
-LIDC
+* LUNA
+* LIDC
 
 $ conda install python=3.7.7
 $ conda install numpy
