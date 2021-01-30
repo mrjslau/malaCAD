@@ -17,6 +17,10 @@ Bachelor Thesis project 2020
 * tensorflow
 * scikit-learn
 
+## Datasets used:
+LUNA
+LIDC
+
 $ conda install python=3.7.7
 $ conda install numpy
 $ conda install pandas
